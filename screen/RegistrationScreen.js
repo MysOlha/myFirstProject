@@ -15,29 +15,31 @@ import {
   ImageBackground,
 } from "react-native";
 
-export default function RegistrationScreen() {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+};
 
-  const nameHandler = (text) => setName(text);
-  const passwordHandler = (text) => setPassword(text);
-  const emailHandler = (text) => setEmail(text);
+export default function RegistrationScreen() {
+  const [state, setState] = useState(initialState);
 
   const onLogin = () => {
-    console.log("Log in"`${name} + ${password}`);
+    Keyboard.dismiss();
+    console.log(state);
+    setState(initialState);
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        <ImageBackground
+          source={require("../BG.png")}
+          resizeMode="stretch"
+          style={styles.bottomSide}
         >
-          <ImageBackground
-            source={require("../BG.png")}
-            resizeMode="stretch"
-            style={styles.bottomSide}
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
             <Image
               source={require("../Add_photo.png")}
@@ -45,20 +47,26 @@ export default function RegistrationScreen() {
             />
             <Text style={styles.title}>Реєстрація</Text>
             <TextInput
-              value={name}
-              onChangeText={nameHandler}
+              value={state.name}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, name: value }))
+              }
               placeholder="Логін"
               style={styles.input}
             />
             <TextInput
-              value={email}
-              onChangeText={emailHandler}
+              value={state.email}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, email: value }))
+              }
               placeholder="Електронна пошта"
               style={styles.input}
             />
             <TextInput
-              value={password}
-              onChangeText={passwordHandler}
+              value={state.password}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, password: value }))
+              }
               placeholder="Пароль"
               secureTextEntry={true}
               style={styles.input}
@@ -68,8 +76,8 @@ export default function RegistrationScreen() {
               <Text style={styles.btnText}>Зареєструватися</Text>
             </TouchableOpacity>
             <Text style={styles.logInText}>Вже є аккаунт? Увійти</Text>
-          </ImageBackground>
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#BDBDBD",
     marginBottom: 16,
     marginHorizontal: 16,
   },

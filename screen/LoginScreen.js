@@ -7,44 +7,68 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Alert,
-  Button,
+  TouchableOpacity,
+  Text,
+  Image,
   ImageBackground,
 } from "react-native";
 
-export default function LoginScreen() {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+const initialState = {
+  password: "",
+  email: "",
+};
 
-  const nameHandler = (text) => setName(text);
-  const passwordHandler = (text) => setPassword(text);
+export default function RegistrationScreen() {
+  const [state, setState] = useState(initialState);
 
   const onLogin = () => {
-    Alert.alert("Credentials", `${name} + ${password}`);
+    Keyboard.dismiss();
+    console.log(state);
+    setState(initialState);
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
-          <TextInput
-            value={name}
-            onChangeText={nameHandler}
-            placeholder="Username"
-            style={styles.input}
-          />
-          <TextInput
-            value={password}
-            onChangeText={passwordHandler}
-            placeholder="Password"
-            secureTextEntry={true}
-            style={styles.input}
-          />
+          <ImageBackground
+            source={require("../BG.png")}
+            resizeMode="stretch"
+            style={styles.bottomSide}
+          >
+            <Image
+              source={require("../Add_photo.png")}
+              style={styles.imgAddPhoto}
+            />
+            <Text style={styles.title}>Увійти</Text>
 
-          <Button title={"Login"} style={styles.input} onPress={onLogin} />
+            <TextInput
+              value={state.email}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, email: value }))
+              }
+              placeholder="Електронна пошта"
+              style={styles.input}
+            />
+            <TextInput
+              value={state.password}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, password: value }))
+              }
+              placeholder="Пароль"
+              secureTextEntry={true}
+              style={styles.input}
+            />
+
+            <TouchableOpacity style={styles.button} onPress={onLogin}>
+              <Text style={styles.btnText}>Увійти</Text>
+            </TouchableOpacity>
+            <Text style={styles.logInText}>
+              Немає аккаунта? Зареєструватися
+            </Text>
+          </ImageBackground>
         </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
@@ -54,16 +78,47 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    // backgroundColor: "#ecf0f1",
+    marginTop: 250,
+  },
+  title: {
+    color: "#212121",
+    fontSize: 30,
+    marginBottom: 20,
+    marginTop: 32,
+    textAlign: "center",
   },
   input: {
-    width: 200,
-    height: 44,
+    backgroundColor: "#E8E8E8",
+    borderRadius: 8,
+    height: 50,
     padding: 10,
     borderWidth: 1,
-    borderColor: "black",
-    marginBottom: 10,
+    borderColor: "#BDBDBD",
+    marginBottom: 16,
+    marginHorizontal: 16,
+  },
+  imgAddPhoto: {
+    marginTop: -60,
+    marginLeft: "33%",
+  },
+
+  button: {
+    height: 51,
+    backgroundColor: "#FF6C00",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginTop: 20,
+    borderRadius: 100,
+  },
+  btnText: {
+    color: "#ffffff",
+    fontSize: 16,
+  },
+  logInText: {
+    color: "1B4371",
+    marginTop: 16,
+    textAlign: "center",
+    marginBottom: 100,
   },
 });
