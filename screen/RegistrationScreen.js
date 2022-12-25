@@ -9,7 +9,10 @@ import {
   Platform,
   Alert,
   Button,
+  TouchableOpacity,
   Text,
+  Image,
+  ImageBackground,
 } from "react-native";
 
 export default function RegistrationScreen() {
@@ -27,23 +30,30 @@ export default function RegistrationScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.bottomSide}>
-        <View style={styles.container}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
+      <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+          <ImageBackground
+            source={require("../BG.png")}
+            resizeMode="stretch"
+            style={styles.bottomSide}
           >
-            <Text>Регистрация</Text>
+            <Image
+              source={require("../Add_photo.png")}
+              style={styles.imgAddPhoto}
+            />
+            <Text style={styles.title}>Реєстрація</Text>
             <TextInput
               value={name}
               onChangeText={nameHandler}
-              placeholder="Логин"
+              placeholder="Логін"
               style={styles.input}
             />
             <TextInput
               value={email}
               onChangeText={emailHandler}
-              placeholder="Адрес электронной почты"
-              secureTextEntry={true}
+              placeholder="Електронна пошта"
               style={styles.input}
             />
             <TextInput
@@ -53,13 +63,13 @@ export default function RegistrationScreen() {
               secureTextEntry={true}
               style={styles.input}
             />
-            <Button
-              title={"Зарегистрироваться"}
-              style={styles.button}
-              onPress={onLogin}
-            />
-          </KeyboardAvoidingView>
-        </View>
+
+            <TouchableOpacity style={styles.button} onPress={onLogin}>
+              <Text style={styles.btnText}>Зареєструватися</Text>
+            </TouchableOpacity>
+            <Text style={styles.logInText}>Вже є аккаунт? Увійти</Text>
+          </ImageBackground>
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -67,24 +77,48 @@ export default function RegistrationScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
+    marginTop: 250,
+  },
+  title: {
+    color: "#212121",
+    fontSize: 30,
+    marginBottom: 20,
+    marginTop: 32,
+    textAlign: "center",
   },
   input: {
-    background: "#F6F6F6",
+    backgroundColor: "#E8E8E8",
     borderRadius: 8,
-    width: 200,
-    height: 44,
+    height: 50,
     padding: 10,
     borderWidth: 1,
     borderColor: "black",
-    marginBottom: 10,
+    marginBottom: 16,
+    marginHorizontal: 16,
+  },
+  imgAddPhoto: {
+    marginTop: -60,
+    marginLeft: "33%",
   },
 
-  bottomSide: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: "25px 25px 0px 0px",
+  button: {
+    height: 51,
+    backgroundColor: "#FF6C00",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginTop: 20,
+    borderRadius: 100,
   },
-  button: { borderRadius: 8 },
+  btnText: {
+    color: "#ffffff",
+    fontSize: 16,
+  },
+  logInText: {
+    color: "1B4371",
+    marginTop: 16,
+    textAlign: "center",
+    marginBottom: 100,
+  },
 });
