@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+<script src="http://localhost:8097"></script>;
 import {
   StyleSheet,
   View,
@@ -21,7 +22,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
 
   const onLogin = () => {
@@ -34,48 +35,67 @@ export default function RegistrationScreen() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../BG.png")}
-          resizeMode="stretch"
-          style={styles.bottomSide}
+          source={require("../PhotoBG.png")}
+          resizeMode="cover"
+          style={styles.bgImage}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
-            <Image
-              source={require("../Add_photo.png")}
-              style={styles.imgAddPhoto}
-            />
-            <Text style={styles.title}>Реєстрація</Text>
-            <TextInput
-              value={state.name}
-              onChangeText={(value) =>
-                setState((prevState) => ({ ...prevState, name: value }))
-              }
-              placeholder="Логін"
-              style={styles.input}
-            />
-            <TextInput
-              value={state.email}
-              onChangeText={(value) =>
-                setState((prevState) => ({ ...prevState, email: value }))
-              }
-              placeholder="Електронна пошта"
-              style={styles.input}
-            />
-            <TextInput
-              value={state.password}
-              onChangeText={(value) =>
-                setState((prevState) => ({ ...prevState, password: value }))
-              }
-              placeholder="Пароль"
-              secureTextEntry={true}
-              style={styles.input}
-            />
+            <ImageBackground
+              source={require("../BG.png")}
+              resizeMode="stretch"
+              style={styles.bottomSide}
+            >
+              <Image
+                source={require("../Add_photo.png")}
+                style={styles.imgAddPhoto}
+              />
+              <Text style={styles.title}>Реєстрація</Text>
 
-            <TouchableOpacity style={styles.button} onPress={onLogin}>
-              <Text style={styles.btnText}>Зареєструватися</Text>
-            </TouchableOpacity>
-            <Text style={styles.logInText}>Вже є аккаунт? Увійти</Text>
+              <TextInput
+                value={state.name}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, name: value }))
+                }
+                placeholder="Логін"
+                style={styles.input}
+              />
+              <TextInput
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
+                placeholder="Електронна пошта"
+                style={styles.input}
+              />
+
+              <TextInput
+                value={state.password}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, password: value }))
+                }
+                placeholder="Пароль"
+                secureTextEntry={true}
+                style={styles.input}
+              />
+
+              <TouchableOpacity style={styles.button} onPress={onLogin}>
+                <Text style={styles.btnText}>Зареєструватися</Text>
+              </TouchableOpacity>
+              <View style={styles.logInText}>
+                <Text>
+                  Вже є аккаунт?
+                  <Text
+                    style={{ fontWeight: "bold" }}
+                    onPress={() => navigation.navigate("Login")}
+                  >
+                    {" "}
+                    Увійти
+                  </Text>
+                </Text>
+              </View>
+            </ImageBackground>
           </KeyboardAvoidingView>
         </ImageBackground>
       </View>
@@ -86,13 +106,16 @@ export default function RegistrationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 250,
+  },
+  bgImage: {
+    flex: 1,
+    justifyContent: "center",
   },
   title: {
     color: "#212121",
     fontSize: 30,
     marginBottom: 20,
-    marginTop: 32,
+    marginTop: 25,
     textAlign: "center",
   },
   input: {
@@ -116,7 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 16,
-    marginTop: 20,
+    marginTop: 10,
     borderRadius: 100,
   },
   btnText: {
@@ -124,9 +147,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   logInText: {
+    alignItems: "center",
+    justifyContent: "center",
     color: "1B4371",
-    marginTop: 16,
-    textAlign: "center",
-    marginBottom: 100,
+    marginTop: 10,
+  },
+  bottomSide: {
+    flex: 1,
+    height: 500,
+    marginTop: -120,
   },
 });

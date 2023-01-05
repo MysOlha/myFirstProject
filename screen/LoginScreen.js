@@ -18,7 +18,7 @@ const initialState = {
   email: "",
 };
 
-export default function RegistrationScreen() {
+export default function LoginScreen({ navigation }) {
   const [state, setState] = useState(initialState);
 
   const onLogin = () => {
@@ -30,46 +30,62 @@ export default function RegistrationScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        <ImageBackground
+          source={require("../PhotoBG.png")}
+          resizeMode="cover"
+          style={styles.bgImage}
         >
-          <ImageBackground
-            source={require("../BG.png")}
-            resizeMode="stretch"
-            style={styles.bottomSide}
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
-            <Image
-              source={require("../Add_photo.png")}
-              style={styles.imgAddPhoto}
-            />
-            <Text style={styles.title}>Увійти</Text>
+            <ImageBackground
+              source={require("../BG.png")}
+              resizeMode="stretch"
+              style={styles.bottomSide}
+            >
+              <Image
+                source={require("../Add_photo.png")}
+                style={styles.imgAddPhoto}
+              />
+              <Text style={styles.title}>Увійти</Text>
 
-            <TextInput
-              value={state.email}
-              onChangeText={(value) =>
-                setState((prevState) => ({ ...prevState, email: value }))
-              }
-              placeholder="Електронна пошта"
-              style={styles.input}
-            />
-            <TextInput
-              value={state.password}
-              onChangeText={(value) =>
-                setState((prevState) => ({ ...prevState, password: value }))
-              }
-              placeholder="Пароль"
-              secureTextEntry={true}
-              style={styles.input}
-            />
+              <TextInput
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
+                placeholder="Електронна пошта"
+                style={styles.input}
+              />
 
-            <TouchableOpacity style={styles.button} onPress={onLogin}>
-              <Text style={styles.btnText}>Увійти</Text>
-            </TouchableOpacity>
-            <Text style={styles.logInText}>
-              Немає аккаунта? Зареєструватися
-            </Text>
-          </ImageBackground>
-        </KeyboardAvoidingView>
+              <TextInput
+                value={state.password}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, password: value }))
+                }
+                placeholder="Пароль"
+                secureTextEntry={true}
+                style={styles.input}
+              />
+
+              <TouchableOpacity style={styles.button} onPress={onLogin}>
+                <Text style={styles.btnText}>Увійти</Text>
+              </TouchableOpacity>
+              <View style={styles.logInText}>
+                <Text>
+                  Немає аккаунта?
+                  <Text
+                    style={{ fontWeight: "bold" }}
+                    onPress={() => navigation.navigate("Registration")}
+                  >
+                    {" "}
+                    Зареєструватися
+                  </Text>
+                </Text>
+              </View>
+            </ImageBackground>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -78,7 +94,10 @@ export default function RegistrationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 250,
+  },
+  bgImage: {
+    flex: 1,
+    justifyContent: "center",
   },
   title: {
     color: "#212121",
@@ -116,9 +135,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   logInText: {
+    alignItems: "center",
+    justifyContent: "center",
     color: "1B4371",
-    marginTop: 16,
-    textAlign: "center",
-    marginBottom: 100,
+    marginTop: 10,
+  },
+  bottomSide: {
+    flex: 1,
+    height: 500,
+    marginTop: -100,
   },
 });
