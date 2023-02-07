@@ -1,9 +1,16 @@
 import React from "react";
 import { useState } from "react";
 
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Image,
+} from "react-native";
 import { Camera } from "expo-camera";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, EvilIcons } from "@expo/vector-icons";
 
 const CreatePostsScreen = () => {
   const [camera, setCamera] = useState(null);
@@ -30,6 +37,29 @@ const CreatePostsScreen = () => {
           <FontAwesome name="camera" size={26} color="#BDBDBD" />
         </TouchableOpacity>
       </Camera>
+      <Text style={styles.upload}>Додайте фото</Text>
+      <TouchableOpacity>
+        <TextInput
+          placeholder="Назва..."
+          fontSize={16}
+          style={styles.signToPhoto}
+        ></TextInput>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <View style={styles.signToPhoto}>
+          <Text>
+            <EvilIcons name="location" size={24} />
+          </Text>
+          <TextInput
+            placeholder="Додати місцезнаходження"
+            fontSize={16}
+          ></TextInput>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Text style={styles.sharePhoto}>Опублікувати</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -62,6 +92,26 @@ const styles = StyleSheet.create({
     left: 10,
     borderColor: "#fff",
     borderWidth: 1,
+  },
+  upload: {
+    color: "#BDBDBD",
+    marginBottom: 32,
+    fontSize: 16,
+    marginLeft: 16,
+    marginTop: 8,
+  },
+  signToPhoto: {
+    marginTop: 16,
+    color: "#BDBDBD",
+    fontSize: 16,
+    marginLeft: 16,
+    flexDirection: "row",
+  },
+  sharePhoto: {
+    textAlign: "center",
+    color: "#BDBDBD",
+    fontSize: 16,
+    marginTop: 48,
   },
 });
 
