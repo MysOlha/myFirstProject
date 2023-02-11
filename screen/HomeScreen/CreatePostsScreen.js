@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   View,
@@ -11,33 +10,52 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import { FontAwesome, EvilIcons } from "@expo/vector-icons";
+import * as Location from "expo-location";
 
-const CreatePostsScreen = () => {
+const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
 
   const takePicture = async () => {
     const photo = await camera.takePictureAsync();
+    // const location = Location.getCurrentPositionAsync();
+    // console.log(location);
+    // console.log(photo.uri);
     setPhoto(photo.uri);
-    console.log(photo.uri);
+  };
+
+  const sendPhoto = async () => {
+    navigation.navigate("Posts", { photo });
+    // console.log(navigation);
   };
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} ref={setCamera}>
+      <Camera
+        style={styles.camera}
+        ref={(ref) => {
+          setCamera(ref);
+        }}
+      >
         {photo && (
-          <View style={styles.takePictureContainer}>
+          <View style={styles.takePhotoContainer}>
             <Image
               source={{ uri: photo }}
-              style={{ width: 200, height: 200 }}
+              style={{ width: 340, height: 240, borderRadius: 8 }}
             />
           </View>
         )}
-        <TouchableOpacity onPress={takePicture} style={styles.cameraBtn}>
-          <FontAwesome name="camera" size={26} color="#BDBDBD" />
-        </TouchableOpacity>
+        <View style={styles.photoView}>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <FontAwesome name="camera" size={26} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
       </Camera>
-      <Text style={styles.upload}>Додайте фото</Text>
+      {!photo ? (
+        <Text style={styles.upload}>Додайте фото</Text>
+      ) : (
+        <Text style={styles.upload}>Редагувати фото</Text>
+      )}
       <TouchableOpacity>
         <TextInput
           placeholder="Назва..."
@@ -57,7 +75,7 @@ const CreatePostsScreen = () => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={sendPhoto}>
         <Text style={styles.sharePhoto}>Опублікувати</Text>
       </TouchableOpacity>
     </View>
@@ -65,9 +83,7 @@ const CreatePostsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   camera: {
     height: 240,
     marginTop: 32,
@@ -76,22 +92,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  cameraBtn: {
-    borderWidth: 1,
-    borderRadius: 50,
-    borderColor: "transparent",
-    backgroundColor: "#fff",
-    width: 60,
-    height: 60,
+  photoView: {
+    flex: 1,
+    backgroundColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
   },
-  takePictureContainer: {
-    position: "absolute",
-    top: 10,
-    left: 10,
-    borderColor: "#fff",
-    borderWidth: 1,
+
+  button: {
+    borderColor: "transparent",
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
   },
   upload: {
     color: "#BDBDBD",
@@ -112,6 +127,11 @@ const styles = StyleSheet.create({
     color: "#BDBDBD",
     fontSize: 16,
     marginTop: 48,
+  },
+  takePhotoContainer: {
+    position: "absolute",
+    marginTop: 32,
+    marginRight: 16,
   },
 });
 
