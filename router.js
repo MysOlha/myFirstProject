@@ -33,6 +33,7 @@ export const useRoute = (authUser) => {
           component={PostsScreen}
           options={{
             title: "Публікації",
+            headerShown: false,
             tabBarIcon: ({}) => (
               <AntDesign name="appstore-o" size={24} color="#212121" />
             ),

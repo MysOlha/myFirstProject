@@ -10,23 +10,47 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import { FontAwesome, EvilIcons } from "@expo/vector-icons";
+import * as MediaLibrary from "expo-media-library";
+
 import * as Location from "expo-location";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
 
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access camera was denied");
+        return;
+      }
+      await MediaLibrary.requestPermissionsAsync();
+    })();
+  });
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+    })();
+  });
+
   const takePicture = async () => {
     const photo = await camera.takePictureAsync();
-    // const location = Location.getCurrentPositionAsync();
-    // console.log(location);
-    // console.log(photo.uri);
+    let location = await Location.getCurrentPositionAsync();
+    console.log(location);
+    console.log(photo.uri);
     setPhoto(photo.uri);
   };
 
   const sendPhoto = async () => {
-    navigation.navigate("Posts", { photo });
+    navigation.navigate("DefaultScreen", { photo });
     // console.log(navigation);
+    camera.resumePreview();
   };
 
   return (
