@@ -78,6 +78,7 @@ export default function LoginScreen({ navigation }) {
                     style={{ fontWeight: "bold" }}
                     onPress={() => navigation.navigate("Registration")}
                   >
+                    {" "}
                     Зареєструватися
                   </Text>
                 </Text>

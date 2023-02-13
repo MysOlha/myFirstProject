@@ -8,7 +8,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 
 const App = () => {
-  const routing = useRoute(true);
+  const routing = useRoute(false);
   return (
     <Provider store={store}>
       <NavigationContainer>{routing}</NavigationContainer>

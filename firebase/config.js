@@ -17,6 +17,4 @@ const firebaseConfig = {
     "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gereb%40first-react-native-proje-4355b.iam.gserviceaccount.com",
 };
 
-firebase.initializeApp(firebaseConfig);
-
-export default firebase;
+export default firebase.initializeApp(firebaseConfig);
