@@ -30,7 +30,6 @@ export default function RegistrationScreen({ navigation }) {
 
   const onLogin = () => {
     Keyboard.dismiss();
-    console.log(state);
     dispatch(authSignIn(state));
     setState(initialState);
   };
@@ -94,7 +93,6 @@ export default function RegistrationScreen({ navigation }) {
                     style={{ fontWeight: "bold" }}
                     onPress={() => navigation.navigate("Login")}
                   >
-                    {" "}
                     Увійти
                   </Text>
                 </Text>

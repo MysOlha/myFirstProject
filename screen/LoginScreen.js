@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { authLogIn } from "../redux/auth/authOperations";
 import {
   StyleSheet,
   View,
@@ -21,9 +23,11 @@ const initialState = {
 export default function LoginScreen({ navigation }) {
   const [state, setState] = useState(initialState);
 
+  const dispatch = useDispatch();
+
   const onLogin = () => {
     Keyboard.dismiss();
-    console.log(state);
+    dispatch(authLogIn(state));
     setState(initialState);
   };
 
