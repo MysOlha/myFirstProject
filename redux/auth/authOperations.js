@@ -4,8 +4,10 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
+
 const auth = getAuth();
 
 const authSignIn =
@@ -27,7 +29,6 @@ const authSignIn =
       };
 
       dispatch(authSlice.actions.updateProfile(userUpdProfile));
-      // console.log(user);
     } catch (error) {
       console.log(error);
     }
@@ -45,12 +46,25 @@ const authLogIn =
 
 const authSignOut = () => async (dispatch, getState) => {
   try {
-    console.log("hi");
+    await signOut(auth);
+    await dispatch(authSlice.actions.authSignOut());
   } catch (error) {
     console.log(error);
   }
 };
 
-const authStateUser = () => async (dispatch, getState) => {};
+const authStateUser = () => async (dispatch, getState) => {
+  await onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userUpdProfile = {
+        name: user.displayName,
+        userId: user.uid,
+      };
+
+      dispatch(authSlice.actions.authStateChange({ stateChange: true }));
+      dispatch(authSlice.actions.updateProfile(userUpdProfile));
+    }
+  });
+};
 
 export { authSignIn, authLogIn, authSignOut, authStateUser };

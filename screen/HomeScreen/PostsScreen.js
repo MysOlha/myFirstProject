@@ -15,7 +15,7 @@ const PostsScreen = () => {
         name="DefaultScreen"
         component={DefaultScreenPosts}
         options={{
-          title: "Публікації",
+          headerShown: false,
         }}
       />
       <NestedScreen.Screen

@@ -12,6 +12,10 @@ import { Camera } from "expo-camera";
 import { FontAwesome, EvilIcons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+const storage = getStorage();
+
 import * as Location from "expo-location";
 
 const CreatePostsScreen = ({ navigation }) => {
@@ -39,28 +43,40 @@ const CreatePostsScreen = ({ navigation }) => {
     })();
   });
 
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniqueId = Date.now().toString();
+
+    const imagesRef = ref(storage, `postImage/${uniqueId}`);
+
+    await uploadBytes(imagesRef, file);
+
+    // const photoUrl = await getDownloadURL(
+    //   ref(storage, `postImage/${uniqueId}`)
+    // );
+    // console.log("photoUrl:", photoUrl);
+    // return photoUrl;
+  };
+
   const takePicture = async () => {
-    const photo = await camera.takePictureAsync();
+    const { uri } = await camera.takePictureAsync();
     let location = await Location.getCurrentPositionAsync();
     console.log(location);
-    console.log(photo.uri);
-    setPhoto(photo.uri);
+    console.log(uri);
+    setPhoto(uri);
   };
 
   const sendPhoto = async () => {
+    uploadPhotoToServer();
     navigation.navigate("DefaultScreen", { photo });
     // console.log(navigation);
-    camera.resumePreview();
+    // camera.resumePreview();
   };
 
   return (
     <View style={styles.container}>
-      <Camera
-        style={styles.camera}
-        ref={(ref) => {
-          setCamera(ref);
-        }}
-      >
+      <Camera style={styles.camera} ref={setCamera}>
         {photo && (
           <View style={styles.takePhotoContainer}>
             <Image

@@ -1,5 +1,7 @@
 import React from "react";
 
+import { authSignOut } from "./redux/auth/authOperations";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -15,10 +17,16 @@ import CreatePostsScreen from "./screen/HomeScreen/CreatePostsScreen";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
 
 export const useRoute = (authUser) => {
+  const dispatch = useDispatch();
+  const signOut = () => {
+    dispatch(authSignOut());
+  };
+
   const exitFromProfile = () => (
-    <Ionicons name="exit-outline" size={30} color="#BDBDBD" />
+    <Ionicons name="exit-outline" size={30} color="#BDBDBD" onPress={signOut} />
   );
 
   if (authUser) {
@@ -33,7 +41,6 @@ export const useRoute = (authUser) => {
           component={PostsScreen}
           options={{
             title: "Публікації",
-            headerShown: false,
             tabBarIcon: ({}) => (
               <AntDesign name="appstore-o" size={24} color="#212121" />
             ),
